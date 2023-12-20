@@ -146,7 +146,7 @@ const loginPost = async (req, res) => {
     try {
         const data = await Member.findOne({
             email: req.body.email
-        }); 
+        });
 
         if (!data) {
             return res.status(400).json({
@@ -162,6 +162,12 @@ const loginPost = async (req, res) => {
             });
         }
 
+        if (data.isAdmin !== "member") {
+            return res.status(400).json({
+                status: 400,
+                message: "Only member can login here!",
+            });
+        }
         const pwd = data.password;
         if (!bcryptjs.compareSync(req.body.password, pwd)) {
             return res.status(400).json({
@@ -169,7 +175,6 @@ const loginPost = async (req, res) => {
                 message: "Incorrect password!",
             });
         }
-
         const token = Jwt.sign(
             {
                 _id: data._id,
@@ -179,7 +184,7 @@ const loginPost = async (req, res) => {
                 image: data.image,
             },
             process.env.JWT_SECRET2,
-            { expiresIn: "1d" }
+            { expiresIn: "60d" }
         );
 
         res.cookie("memberToken", token);
