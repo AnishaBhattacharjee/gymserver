@@ -146,52 +146,59 @@ const loginPost = async (req, res) => {
     try {
         const data = await Member.findOne({
             email: req.body.email
-        })
+        }); 
 
-        if (data) {
-            if (data.isVerified == true) {
-                if (data.isAdmin == "member") {
-                    const pwd = data.password;
-                    if (bcryptjs.compareSync(req.body.password, pwd)) {
-                        const token = Jwt.sign({
-                            _id: data._id,
-                            name: data.name,
-                            email: data.email,
-                            phone: data.phone,
-                            image: data.image
-                        }, process.env.JWT_SECRET2, { expiresIn: "1d" });
-                        res.cookie("memberToken", token);
-                        console.log(data)
-                        return res.status(200).json({
-                            status: 200,
-                            data,
-                            token,
-                            message: "Login Successful"
-                        })
-                    } else {
-                        return res.status(400).json({
-                            status: 400,
-                            message: "password is wrong!"
-                        })
-                    }
-                } else {
-                    return res.status(400).json({
-                        status: 400,
-                        message: "Member doesnt exist! "
-                    })
-                }
-            } else {
-                return res.status(400).json({
-                    status: 400,
-                    message: "Member is not verified!"
-                })
-            }
-
+        if (!data) {
+            return res.status(400).json({
+                status: 400,
+                message: "Member doesn't exist!",
+            });
         }
+
+        if (!data.isVerified) {
+            return res.status(400).json({
+                status: 400,
+                message: "Member is not verified!",
+            });
+        }
+
+        const pwd = data.password;
+        if (!bcryptjs.compareSync(req.body.password, pwd)) {
+            return res.status(400).json({
+                status: 400,
+                message: "Incorrect password!",
+            });
+        }
+
+        const token = Jwt.sign(
+            {
+                _id: data._id,
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                image: data.image,
+            },
+            process.env.JWT_SECRET2,
+            { expiresIn: "1d" }
+        );
+
+        res.cookie("memberToken", token);
+
+        return res.status(200).json({
+            status: 200,
+            data,
+            token,
+            message: "Login Successful",
+        });
     } catch (error) {
-        console.log(error);
+        console.error(error);
+        return res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+        });
     }
-}
+};
+
 
 const logoutMember = (req, res) => {
     res.clearCookie("memberToken");
