@@ -24,7 +24,7 @@ app.use(session({
   cookie: {
       maxAge: 60000
   },
-  secret: "shirshendu1234",
+  secret: "anisha1234",
   resave: false,
   saveUninitialized: false
 }));
@@ -51,8 +51,6 @@ app.use('/admin',adminRoute)
 // apiRouter set up
 const apiRoute=require('./Route/ApiRoute')
 app.use(apiRoute)
-
-// adminRouter set up
 
 
 // port setup

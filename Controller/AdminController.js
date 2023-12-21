@@ -268,7 +268,8 @@ const confirmaton = (req, res) => {
 
 const loginForm=(req,res)=>{
 res.render("adminLogin",{
-    title:"loginpage"
+    title:"loginpage",
+    message:req.flash("message")
 })
 }
 
@@ -292,11 +293,11 @@ const loginPost=async(req,res)=>{
                     res.redirect('/admin');
                     console.log(data);
                 } else {
-                    req.flash('message', "Password Not Match.....")
+                    req.flash('message', "Password Does Not Match")
                     res.redirect('/admin/loginform')
                 }
             } else {
-                req.flash('message', "Email Not Exist.......")
+                req.flash('message', "Email Does Not Exist")
                 res.redirect('/admin/loginform')
             }
         }
