@@ -78,6 +78,14 @@ const disapprove = async (req, res) => {
     }
 }
 
+const bookingDelete=(req,res)=>{
+    Booking.deleteOne({_id:req.params.id}).then((del)=>{
+        res.redirect('/admin/bookings')
+    }).catch((err)=>{
+        console.log(err,"delete failed")
+    })
+}
+
 
 
 const getTrainer=async(req,res)=>{
@@ -326,6 +334,7 @@ module.exports={
     bookingDetailsData,
     approve,
     disapprove,
+    bookingDelete,
     getTrainer,
     addTrainer,
     postTrainer,

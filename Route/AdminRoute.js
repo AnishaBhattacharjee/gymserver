@@ -24,6 +24,8 @@ Route.get('/', [adminVerify.jwtAuth],AdminController.adminAuth,AdminController.i
 Route.get('/bookings',[adminVerify.jwtAuth],AdminController.adminAuth, AdminController.bookingDetailsData)
 Route.get("/approve/:id",AdminController.approve);
 Route.get("/disapprove/:id",AdminController.disapprove);
+Route.get('/deleteBooking/:id', AdminController.bookingDelete)
+
 
 // ****trainer routes****
 Route.get('/trainer',[adminVerify.jwtAuth],AdminController.adminAuth, AdminController.getTrainer)
