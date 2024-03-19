@@ -26,9 +26,9 @@ Route.get('/getblogdetails/:id',ApiController.blogDetails)
 
 // *****authentication*****
 //Route.post('/register',uploadImage.single("image"),ApiController.createRegister)
-Route.post('/register/create',uploadImage.single("image"),ApiController.createRegister)
+Route.post('/register',uploadImage.single("image"),ApiController.createRegister)
 Route.get('/confirmation/:email/:token',ApiController.confirmaton)
-Route.post('/login/create', ApiController.loginPost)
+Route.post('/login', ApiController.loginPost)
 Route.get('/logoutmember', ApiController.logoutMember)
 
 module.exports=Route
